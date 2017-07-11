@@ -27,7 +27,7 @@ import retrofit2.Response;
  * Created by RENT on 2017-07-10.
  */
 
-public class AddRestaurantDialogFragment extends DialogFragment {
+public class AddEditRestaurantDialogFragment extends DialogFragment {
 
     @BindView(R.id.addRestaurant_name)
     EditText nameEditText;

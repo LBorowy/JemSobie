@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.sdaacademy.zientara.rafal.jemsobie.adapter.RecyclerViewAdapter;
 import com.sdaacademy.zientara.rafal.jemsobie.adapter.RestaurantsHolderArrayAdapter;
-import com.sdaacademy.zientara.rafal.jemsobie.dialogs.AddRestaurantDialogFragment;
+import com.sdaacademy.zientara.rafal.jemsobie.dialogs.AddEditRestaurantDialogFragment;
 import com.sdaacademy.zientara.rafal.jemsobie.dialogs.LongClickDeleteRestaurantDialogFragment;
 import com.sdaacademy.zientara.rafal.jemsobie.models.Restaurant;
 import com.sdaacademy.zientara.rafal.jemsobie.retrofit.BaseRetrofit;
@@ -30,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LongClickDeleteRestaurantDialogFragment.OnDeleteSuccess{
 
     @BindView(R.id.main_refreshButton)
     Button refreshButton;
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     public void clickShowAddRestaurantDialog() {
         //// TODO: 09.07.2017 open DialogFragment and add Restaurant
 
-        AddRestaurantDialogFragment addRestaurantDialogFragment = new AddRestaurantDialogFragment();
+        AddEditRestaurantDialogFragment addRestaurantDialogFragment = new AddEditRestaurantDialogFragment();
         addRestaurantDialogFragment.show(getSupportFragmentManager(), null);
 
 //        Restaurant restaurant = new Restaurant();
@@ -209,5 +209,10 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.main_refreshButton)
     public void clickRefreshList() {
         downloadRestaurants();
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+        clickRefreshList();
     }
 }
