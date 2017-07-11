@@ -1,27 +1,24 @@
 package com.sdaacademy.zientara.rafal.jemsobie;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sdaacademy.zientara.rafal.jemsobie.adapter.RecyclerViewAdapter;
 import com.sdaacademy.zientara.rafal.jemsobie.adapter.RestaurantsHolderArrayAdapter;
 import com.sdaacademy.zientara.rafal.jemsobie.dialogs.AddRestaurantDialogFragment;
+import com.sdaacademy.zientara.rafal.jemsobie.dialogs.LongClickDeleteRestaurantDialogFragment;
 import com.sdaacademy.zientara.rafal.jemsobie.models.Restaurant;
 import com.sdaacademy.zientara.rafal.jemsobie.retrofit.BaseRetrofit;
-import com.sdaacademy.zientara.rafal.jemsobie.service.RestaurantsApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +26,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ArrayAdapter adapter;
     private RecyclerViewAdapter recyclerViewAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +148,24 @@ public class MainActivity extends AppCompatActivity {
 //        ListAdapter adapter = new RestaurantsArrayAdapter(getApplicationContext(), restaurantList);
         adapter = new RestaurantsHolderArrayAdapter(getApplicationContext(), restaurantList);
         listView.setAdapter(adapter);
+
+        // nasłuchiwanie przy DŁUŻSZYM przyciśnięciu rekordu
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Restaurant restaurant = restaurantList.get(i);
+
+
+                LongClickDeleteRestaurantDialogFragment longClickDeleteRestaurantDialogFragment = LongClickDeleteRestaurantDialogFragment.newInstance(restaurant);
+                longClickDeleteRestaurantDialogFragment.show(getSupportFragmentManager(), null); // show fragment utworzony
+
+                Log.d("CLICK", "id: " + i);
+
+
+                return true;
+//                return false;
+            }
+        });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), restaurantList);

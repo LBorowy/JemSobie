@@ -39,7 +39,7 @@ public class AddRestaurantDialogFragment extends DialogFragment {
     Button addButton;
 
 
-    @Override
+    @Override // ponieważ operujemy na FRAGMENCIE
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_add_restaurant, container, false);
         ButterKnife.bind(this, view);
